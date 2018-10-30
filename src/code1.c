@@ -78,18 +78,18 @@ char* getVarType(char in[], int len) {  /*Function that returns variable type fr
     return "string";
 }
 
-char* my_strcpy(char delim,char *destination, char *source, char* rest) {
+char* my_strcpy(char delim,char *destination, char *source, char* rest) {	//function to read contents between quotes or braces 
     if(delim=='"') delim='"';
     else if(delim=='{') delim='}';
-    else if(delim=='[') delim=']';
+    else if(delim=='[') delim=']';	// delim is made as second part of delim;
 
-    char* start = destination;
+    char* start = destination;		//storing the start address of destination
 
     *destination = *source;
     destination++;
     source++;
 
-    while(*source!=delim) {
+    while(*source!=delim) {		// contents of source allocated to destination till second part of delim
         *destination = *source;
         destination++;
         source++; 
@@ -97,11 +97,11 @@ char* my_strcpy(char delim,char *destination, char *source, char* rest) {
     *destination = delim;
     destination++;
     source++;
-    return start;
+    return start;			// starting address of destination is returned.
 }
 
 void skip(char *line){
-    char* rest =line;
+    char* rest =line;				//function to skip
     int count=0,count1=0;
     bool flag=0;
     while(count1<2 && rest[0]!='\0') {
@@ -117,29 +117,29 @@ void skip(char *line){
     }
 }    
 
-void getVar(char* input) {
+void getVar(char* input) {	// function to read the buffer and store variables in var array and corresponding types in types array.
     char *rest = input;
     char *line=NULL;
     char *assigned;
 
-    while((line=strtok_r(rest,"\n;",&rest))) {
+    while((line=strtok_r(rest,"\n;",&rest))) {	//tokenising input buffer based on \n and ;
         if(line[0]=='#')
             continue;
         char *words;
         char *rem=line;
-        while((words=strtok_r(rem," ",&rem)))
+        while((words=strtok_r(rem," ",&rem)))	// tokenising line into words
         {
             if(strcmp(words,"proc")==0) {
                // printf("It's a proc\n");
-                strcpy(type[count],"proc");
-                var[count] = strtok(rem," {");
+                strcpy(type[count],"proc");	// assigning type to funct var as proc
+                var[count] = strtok(rem," {");	// storing name of function
                 count++;
                 //skip(rest);
                 //printf("%s\n",rest);
                 break;
             } else if(strcmp(words,"list")==0 || strcmp(words,"array")==0 || strcmp(words,"dict")==0) {
                // printf("%s\n",words);
-                strcpy(type[count],words);
+                strcpy(type[count],words);		// storing types as list,array,dict
                 char* w=strtok_r(rem," ",&rem);
                 if(strcmp(w,"set")==0) 
                     var[count] = strtok(rem," ");
@@ -148,21 +148,21 @@ void getVar(char* input) {
             } else if(strcmp(words,"set")==0) {
                // printf("It's a set\n"); 
                 int i;
-                var[count] = strtok_r(rem," ",&rem);
+                var[count] = strtok_r(rem," ",&rem);	
                 if(strchr(var[count],'(')!=NULL) {
-                    var[count]=strtok(var[count],"(");
-                    strcpy(type[count],"array");
+                    var[count]=strtok(var[count],"("); 	// assigning array type if declaration is of second type.
+                    strcpy(type[count],"array");	
                     count++;
                     break;
                 }
-                else if(rem[0]!='"' && rem[0]!='{' && rem[0]!='[') {
+                else if(rem[0]!='"' && rem[0]!='{' && rem[0]!='[') {	
                     assigned = strtok_r(rem," }",&rem);
-                    strcpy(type[count],getVarType(assigned,strlen(assigned)));
+                    strcpy(type[count],getVarType(assigned,strlen(assigned)));	// checking type of the expression
                 }
                 else {
                     char delim=rem[0];
                     assigned = my_strcpy(delim,rem,rem,rest);
-                    strcpy(type[count],getVarType(assigned,strlen(assigned)));
+                    strcpy(type[count],getVarType(assigned,strlen(assigned)));	// assigning type if it is quoted word/nested expression
                 }
                 count++;    
                 break;                  
@@ -173,46 +173,46 @@ void getVar(char* input) {
 
 void storeVar() {
     FILE* fptr;
-    fptr = fopen("variables.txt","w");
+    fptr = fopen("variables.txt","w");	// creating variables.txt  file 
     if(fptr==NULL) {
         perror("Error opening file");
         return;
     }
     for(int i=0;i<count;i++)
-        fprintf(fptr,"%s %s\n",var[i],type[i]);
+        fprintf(fptr,"%s %s\n",var[i],type[i]);	// storing variable and its types on to it
     fclose(fptr);    
 }
 
-char get_structural_type(int x) {
+char get_structural_type(int x) {	// function to assign structural types to data
     if(strcmp(type[x],"string")==0 || strcmp(type[x],"num")==0 ||
         strcmp(type[x],"char")==0 || strcmp(type[x],"bool")==0 || strcmp(type[x],"proc")==0)
         return 'a';
-    else if(strcmp(type[x],"list")==0 || strcmp(type[x],"dict")==0)
+    else if(strcmp(type[x],"list")==0 || strcmp(type[x],"dict")==0)	
         return 'b';
-    else if(strcmp(type[x],"array")==0)
+    else if(strcmp(type[x],"array")==0)		
         return 'c';
 }
 
-void checkStructuralEquivalence() {
+void checkStructuralEquivalence() {	// to print structural equivalance table
    // a lookUp table outputted
     printf("Table to determine structural equivalence:\n");
 
     printf("\t");
 
     for(int i=0;i<count;i++) 
-        printf("%s\t", var[i]);
+        printf("%s\t", var[i]);  	// print the variables name
     printf("\n");
 
     for(int i=0;i<count;i++) {
 
         printf("%s ",var[i]);
 
-        char type_1=get_structural_type(i);
+        char type_1=get_structural_type(i);	// getting the type of variable
 
         for (int j=0;j<=i;j++)
             printf("\t");
         for(int j=i;j<count;j++) {
-            char type_2=get_structural_type(j);
+            char type_2=get_structural_type(j);	// getting the type of rem variables
             if(type_1==type_2)
                 printf("Y\t");
             else
@@ -223,9 +223,9 @@ void checkStructuralEquivalence() {
     return;
 }
 
-void checkNameEquivalence() {
+void checkNameEquivalence() {		//function to check which types are name equivalent.
 
-    printf("\nNameEquivalence:\n");
+    printf("\nNameEquivalence:\n");		
     for(int i=0;i<count-1;i++)
      printf("%s, ",var[i]);
     printf("%s", var[count-1]);
@@ -233,23 +233,23 @@ void checkNameEquivalence() {
     return ;     
 }
 
-void checkInternalEquivalence() {
+void checkInternalEquivalence() {	//function to check which types are name equivalent
     
     printf("\nInternal Name Equivalence:\n");
 
     bool flag[count];
-    memset(flag, 0, sizeof(flag));
+    memset(flag, 0, sizeof(flag));	// array of flags initialised to '0'
     int rule_num=1;
 
     for(int i=0;i<count;i++) {
-        if(flag[i]==0) {
+        if(flag[i]==0) {		// check if it is not printed before i.e internal equivalent
 
-            printf("%d.\t%s", rule_num++, var[i]);
+            printf("%d.\t%s", rule_num++, var[i]);	 
 
             for(int j=i+1;j<count;j++) {
                 if(strcmp(type[j], type[i])==0){
                     printf(", %s", var[j]);
-                    flag[j]=1;
+                    flag[j]=1;		// setting flag to one so it need not be checked again
                 }
             }
             printf(" are internal equivalent.\n");
@@ -277,7 +277,7 @@ int main() {
 
     file = fopen(filename, "r");
     if(file==NULL) {
-        perror("Error opening file");
+        perror("Error opening file");		// opening file
         return 0;
     }
   //  printf("yes\n");
@@ -287,7 +287,7 @@ int main() {
     rewind(file);
   //  printf("%d\n",size);
 
-    input=(char*)malloc(sizeof(size));
+    input=(char*)malloc(sizeof(size));		// allocating memory to buffer
     if(input==NULL){
         perror("Error allocating memory");
     }
@@ -300,7 +300,7 @@ int main() {
 
     getVar(input);
 
-    storeVar();
+    storeVar();			// storing variables and their types in a file
 
     checkEquivalence();
 
