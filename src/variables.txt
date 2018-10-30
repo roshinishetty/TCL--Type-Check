@@ -1,0 +1,8 @@
+sum proc
+person array
+l list
+in0 string
+in1 string
+x char
+y num
+z num

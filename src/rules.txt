@@ -1,0 +1,11 @@
+﻿Rules for equivalence are:
+
+    1. Structural equivalence is used for associative arrays.
+    2. Structural equivalence is used for lists.
+    3. Structural equivalence is used for dictionaries.
+    4. Structural equivalence is used for functions.
+    5. Internal equivalence is used for strings.
+    6. Internal equivalence is used for numbers.
+    7. Internal equivalence is used for booleans.
+    8. Internal equivalence is used for characters.
+

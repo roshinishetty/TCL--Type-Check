@@ -1,0 +1,21 @@
+Table to determine structural equivalence:
+	sum	person	l	in0	in1	x	y	z	
+sum 	Y	N	N	Y	Y	Y	Y	Y	
+person 		Y	N	N	N	N	N	N	
+l 			Y	N	N	N	N	N	
+in0 				Y	Y	Y	Y	Y	
+in1 					Y	Y	Y	Y	
+x 						Y	Y	Y	
+y 							Y	Y	
+z 								Y	
+
+NameEquivalence:
+sum, person, l, in0, in1, x, y, z are name equivalent.
+
+Internal Name Equivalence:
+1.	sum are internal equivalent.
+2.	person are internal equivalent.
+3.	l are internal equivalent.
+4.	in0, in1 are internal equivalent.
+5.	x are internal equivalent.
+6.	y, z are internal equivalent.
