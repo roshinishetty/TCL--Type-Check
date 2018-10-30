@@ -14,8 +14,9 @@ gcc compiler
 ### Installing
 
 * Clone or download the plugin into the ```wp-content/plugins ``` directory in your site.
-[Link]
-(https://github.com/roshinishetty/TCL--Type-Check.git)
+```
+https://github.com/roshinishetty/TCL--Type-Check.git
+```
 * Activate the plugin.
 ``` 
 wp plugin activate TCL--Type-Check
@@ -64,15 +65,15 @@ set y 10
 Output:
 ```
 Table for Structural equivalence:
-	x 	y
-x	Y   Y
-y	 	Y
+	x y
+x	Y Y
+y	  Y
 
 Name Equivalence:
 x, y are name equivalent.
 
 Internal Name Equivalent:
-1.	x, y are internal equivalent.
+1. x, y are internal equivalent.
 ```
 Code2 checks if the pair of variables inputted are equivalent in the TCL script given to based on the rules inputted.
 
@@ -99,4 +100,4 @@ Contributors for this project are:
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the MIT License 
