@@ -57,6 +57,8 @@ t1.tcl
 
 Code1 identifies all the variables and procedures available in TCL script file inputted. Checks the type. It tests the name, internal name and structural equivalence for each pair of variables and procedures.
 
+The variables identified and their internal types are stored in variables.txt by code1. 
+
 Example of TCL script file:
 ```
 set x a
@@ -76,6 +78,8 @@ Internal Name Equivalent:
 1. x, y are internal equivalent.
 ```
 Code2 checks if the pair of variables inputted are equivalent in the TCL script given to based on the rules inputted.
+Code1 output is stored in result.txt for reading in code2.
+Rules for checking equivalence is written in rules.txt.
 
 ```
 x y
